@@ -4,14 +4,16 @@ import { useStats, useTargets, saveProfile } from '../hooks'
 import { today, addDays, fmtD, fmtLong, navyFat, sleepHours, r0, r1, weekStart, sumMacros, TYPES, parseD, dstr } from '../calc'
 import { Sheet, Seg, Field, Num, toNum, Stars, toast } from '../ui'
 import { LineChart, BarChart } from '../Chart'
+import { PushupStats } from './Pushups'
 
 export default function Progress({ profile }) {
   const [view, setView] = useState('body')
   return (
     <>
       <div className="hdr"><h1>Gelişim</h1></div>
-      <Seg value={view} onChange={setView} options={[['body', 'Vücut'], ['sleep', 'Uyku'], ['report', 'Rapor'], ['badges', 'Rozetler']]} />
+      <Seg value={view} onChange={setView} options={[['body', 'Vücut'], ['pushups', 'Şınav'], ['sleep', 'Uyku'], ['report', 'Rapor'], ['badges', 'Rozetler']]} />
       {view === 'body' && <Body profile={profile} />}
+      {view === 'pushups' && <PushupStats profile={profile} />}
       {view === 'sleep' && <Sleep profile={profile} />}
       {view === 'report' && <Report profile={profile} />}
       {view === 'badges' && <Badges profile={profile} />}
@@ -204,7 +206,7 @@ function Report({ profile }) {
   const [mode, setMode] = useState('week')
   const [off, setOff] = useState(0)
   const t = useTargets(profile)
-  const workouts = useCol('workouts'), food = useCol('food'), sleep = useCol('sleep'), body = useCol('body'), water = useCol('water')
+  const workouts = useCol('workouts'), food = useCol('food'), sleep = useCol('sleep'), body = useCol('body'), water = useCol('water'), pushups = useCol('pushups')
   const range = (o) => {
     if (mode === 'week') {
       const s = addDays(weekStart(today()), -7 * o)
@@ -234,6 +236,7 @@ function Report({ profile }) {
       sleep: sl.length ? r1(sl.reduce((a, x) => a + x.hours, 0) / sl.length) : null,
       water: wt.length ? r1(wt.reduce((a, x) => a + x.ml, 0) / wt.length / 1000) : null,
       wDelta: bd.length > 1 ? r1(bd[bd.length - 1].weight - bd[0].weight) : null,
+      push: pushups.filter(inR).reduce((a, x) => a + (x.total || 0), 0), pushDays: pushups.filter((x) => inR(x) && x.total >= (profile.pushupGoal || 30)).length,
       notes: w.filter((x) => x.improve).map((x) => x.improve),
     }
   }
@@ -277,6 +280,8 @@ function Report({ profile }) {
             <Row l="Toplam süre" v={cur.min} pv={prev.min} unit=" dk" />
             <Row l="Yakılan" v={cur.burn} pv={prev.burn} unit=" kcal" />
             <Row l="Ort. zorluk" v={cur.rpe} pv={prev.rpe} unit="/10" />
+            <Row l="Toplam şınav" v={cur.push} pv={prev.push} />
+            <Row l="Şınav hedefi tutan gün" v={cur.pushDays} pv={prev.pushDays} />
             <Row l="Ort. kalori" v={cur.kcal} pv={prev.kcal} unit=" kcal" />
             <Row l="Ort. protein" v={cur.p} pv={prev.p} unit=" g" />
             <Row l="Protein hedefi tutan gün" v={cur.pHit} pv={prev.pHit} />

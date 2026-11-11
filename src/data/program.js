@@ -41,6 +41,7 @@ export const WORKOUTS = {
 }
 
 export const DAY_NOTES = {
+  bokskick: 'Boks + kickboks dersi. Dersten 2-3 saat önce karbonhidratlı bir öğün ye, yanına su al. Dersten sonra 5-10 dk kalça ve hamstring esnet, "Öğren" bölümünden çalışılan tekniği puanla.',
   boks: 'Ders günü. Dersten 2-3 saat önce karbonhidratlı bir öğün ye, yanına su al. Dersten sonra "Öğren" bölümünden çalışılan tekniği puanla.',
   kickboks: 'Ders günü. Kalça ve hamstring esnekliği için dersten sonra 5-10 dk esneme ekle.',
   mma: 'Ders günü. Yer çalışması boyun ve kalçayı zorlar; ısınmayı atlama, tırnaklarını kısa tut.',

@@ -168,7 +168,7 @@ function StrengthProgress({ workouts }) {
 }
 const fmtSet = (s, ex) => (ex.timed ? `${s.kg ? s.kg + ' kg · ' : ''}${s.reps} sn` : `${s.kg ? s.kg + ' kg × ' : ''}${s.reps}`)
 
-const LOG_TYPES = ['boks', 'kickboks', 'mma', 'kuvvetA', 'kuvvetB', 'kondisyon', 'torba', 'kosu', 'ip', 'yuruyus', 'mobilite']
+const LOG_TYPES = ['bokskick', 'boks', 'kickboks', 'mma', 'kuvvetA', 'kuvvetB', 'kondisyon', 'torba', 'kosu', 'ip', 'yuruyus', 'mobilite']
 
 export function WorkoutForm({ profile, init, onClose }) {
   const e = init.edit
@@ -176,7 +176,7 @@ export function WorkoutForm({ profile, init, onClose }) {
   const [f, setF] = useState(() =>
     e
       ? { ...e }
-      : { date: init.date || today(), type: init.type && init.type !== 'dinlenme' ? init.type : 'boks', min: planMinutes(init.type || 'boks'), rpe: 6, rounds: '', sparring: false, good: '', improve: '', sets: {} }
+      : { date: init.date || today(), type: init.type && init.type !== 'dinlenme' ? init.type : 'bokskick', min: planMinutes(init.type || 'bokskick'), rpe: 6, rounds: '', sparring: false, good: '', improve: '', sets: {} }
   )
   const set = (k) => (v) => setF((s) => ({ ...s, [k]: v }))
   const t = TYPES[f.type]

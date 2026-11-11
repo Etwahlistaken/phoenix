@@ -14,7 +14,7 @@ export default function Welcome() {
     <div className="app" style={{ paddingBottom: 40 }}>
       <div style={{ padding: '28px 0 18px' }}>
         <div style={{ fontSize: 44 }}>🥊</div>
-        <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.02em' }}>Köşe'ye hoş geldin</h1>
+        <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.02em' }}>Phoenix'e hoş geldin</h1>
         <p className="muted" style={{ marginTop: 6 }}>Boks, kickboks ve MMA yolculuğunda antrenmanını, beslenmeni, uykunu ve gelişimini tek yerden takip et.</p>
       </div>
       <div className="card col">

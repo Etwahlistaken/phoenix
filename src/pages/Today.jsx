@@ -3,6 +3,7 @@ import { useStats, useTargets } from '../hooks'
 import { today, dow, fmtLong, TYPES, sumMacros, r0, r1, addDays, weekStart, DAYS_S, programWeek, parseD } from '../calc'
 import { phaseFor, DAY_NOTES, TIPS } from '../data/program'
 import { Ring, MacroBar, toast } from '../ui'
+import { PushupCard } from './Pushups'
 
 export default function Today({ profile, nav }) {
   const d = today()
@@ -119,6 +120,8 @@ export default function Today({ profile, nav }) {
         </div>
       </div>
 
+      <PushupCard profile={profile} date={d} />
+
       <div className="card">
         <div className="row between" style={{ marginBottom: 10 }}>
           <h3 style={{ margin: 0 }}>Bu hafta</h3>
@@ -148,7 +151,7 @@ export default function Today({ profile, nav }) {
         {lv.next && (
           <>
             <div className="bar" style={{ margin: '12px 0 6px' }}><i style={{ width: `${((lv.xp - lv.base) / (lv.next - lv.base)) * 100}%`, background: 'var(--accent)' }} /></div>
-            <div className="muted tiny">Sonraki seviyeye {lv.next - lv.xp} XP · antrenman 50, beslenme günü 15, ölçüm 20 XP</div>
+            <div className="muted tiny">Sonraki seviyeye {lv.next - lv.xp} XP · antrenman 50, ölçüm 20, beslenme günü 15, şınav günü 10 XP</div>
           </>
         )}
       </div>

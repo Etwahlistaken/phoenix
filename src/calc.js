@@ -28,6 +28,7 @@ export const r1 = (n) => Math.round((n || 0) * 10) / 10
 
 // ---- Antrenman türleri (MET: Compendium of Physical Activities yaklaşık değerleri) ----
 export const TYPES = {
+  bokskick: { name: 'Boks + Kickboks', met: 8.2, icon: '🥊', fight: true },
   boks: { name: 'Boks', met: 7.8, icon: '🥊', fight: true },
   kickboks: { name: 'Kickboks', met: 8.5, icon: '🦵', fight: true },
   mma: { name: 'MMA', met: 8.5, icon: '🤼', fight: true },
@@ -60,13 +61,14 @@ export const DEFAULT_PROFILE = {
   proteinPerKg: 2,
   startDate: null,
   // Pzt..Paz
-  schedule: ['kuvvetA', 'boks', 'mma', 'kickboks', 'mma', 'kuvvetB', 'dinlenme'],
+  schedule: ['kuvvetA', 'bokskick', 'mma', 'bokskick', 'mma', 'kuvvetB', 'dinlenme'],
+  pushupGoal: 30,
   waterGoal: 3000,
   sleepGoal: 8,
   bedtime: '23:30',
   weighDay: 0,
 }
-const PLAN_MIN = { boks: 60, kickboks: 60, mma: 60, kuvvetA: 55, kuvvetB: 60, kondisyon: 30, torba: 30, kosu: 30, ip: 15, yuruyus: 40, mobilite: 20, dinlenme: 0 }
+const PLAN_MIN = { bokskick: 60, boks: 60, kickboks: 60, mma: 60, kuvvetA: 55, kuvvetB: 60, kondisyon: 30, torba: 30, kosu: 30, ip: 15, yuruyus: 40, mobilite: 20, dinlenme: 0 }
 export const planMinutes = (t) => PLAN_MIN[t] ?? 30
 
 export const GOALS = {

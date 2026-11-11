@@ -52,7 +52,7 @@ h1, h2, h3, p { margin: 0; }
 .num { font-variant-numeric: tabular-nums; }
 .b { font-weight: 700; }
 .center { text-align: center; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 13px; background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.btn { white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 13px; background: var(--accent); color: var(--accent-ink); font-weight: 700; }
 .btn.full { width: 100%; }
 .btn.ghost { background: var(--s2); color: var(--text); }
 .btn.sm { min-height: 36px; padding: 0 12px; border-radius: 10px; font-size: 13.5px; }

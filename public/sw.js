@@ -1,5 +1,5 @@
 // Basit çevrimdışı önbellek: önce ağ, olmazsa önbellek.
-const CACHE = 'kose-v1'
+const CACHE = 'phoenix-v2'
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html'])).then(() => self.skipWaiting()))
 })

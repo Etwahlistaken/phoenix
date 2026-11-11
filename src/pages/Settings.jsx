@@ -5,7 +5,7 @@ import { exportJSON, importJSON, wipeAll } from '../store'
 import { useSync, saveConfig, clearConfig, signIn, signUp, signOut, syncNow, getConfig } from '../sync'
 import { Sheet, Field, Num, toNum, toast } from '../ui'
 
-const SCHED = ['boks', 'kickboks', 'mma', 'kuvvetA', 'kuvvetB', 'kondisyon', 'torba', 'kosu', 'ip', 'yuruyus', 'mobilite', 'dinlenme']
+const SCHED = ['bokskick', 'boks', 'kickboks', 'mma', 'kuvvetA', 'kuvvetB', 'kondisyon', 'torba', 'kosu', 'ip', 'yuruyus', 'mobilite', 'dinlenme']
 
 async function saveFile(name, text, type) {
   const file = new File([text], name, { type })
@@ -29,19 +29,19 @@ function buildICS(p, r) {
   const d0 = today().replace(/-/g, '')
   const hm = (t) => t.replace(':', '') + '00'
   const ev = (uid, title, time, rrule) =>
-    ['BEGIN:VEVENT', `UID:kose-${uid}@kose.app`, `DTSTAMP:${d0}T000000Z`, `DTSTART:${d0}T${hm(time)}`, 'DURATION:PT5M', `RRULE:${rrule}`, `SUMMARY:${title}`, 'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${title}`, 'TRIGGER:PT0M', 'END:VALARM', 'END:VEVENT'].join('\r\n')
-  const out = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Kose//TR', 'CALSCALE:GREGORIAN']
-  if (r.weigh) out.push(ev('tarti', '⚖️ Tartı ve ölçüm günü (Köşe)', '08:00', `FREQ=WEEKLY;BYDAY=${BY[p.weighDay]}`))
+    ['BEGIN:VEVENT', `UID:phoenix-${uid}@phoenix.app`, `DTSTAMP:${d0}T000000Z`, `DTSTART:${d0}T${hm(time)}`, 'DURATION:PT5M', `RRULE:${rrule}`, `SUMMARY:${title}`, 'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${title}`, 'TRIGGER:PT0M', 'END:VALARM', 'END:VEVENT'].join('\r\n')
+  const out = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Phoenix//TR', 'CALSCALE:GREGORIAN']
+  if (r.weigh) out.push(ev('tarti', '⚖️ Tartı ve ölçüm günü (Phoenix)', '08:00', `FREQ=WEEKLY;BYDAY=${BY[p.weighDay]}`))
   if (r.sleep) {
     const [h, m] = p.bedtime.split(':').map(Number)
     const t = (h * 60 + m - 30 + 1440) % 1440
-    out.push(ev('uyku', '😴 Yatmaya hazırlan: ekranı bırak (Köşe)', `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`, 'FREQ=DAILY'))
+    out.push(ev('uyku', '😴 Yatmaya hazırlan: ekranı bırak (Phoenix)', `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`, 'FREQ=DAILY'))
   }
-  if (r.water) ['11:00', '15:00', '18:30'].forEach((t, i) => out.push(ev('su' + i, '💧 Su iç (Köşe)', t, 'FREQ=DAILY')))
-  if (r.food) out.push(ev('ogun', '🍽️ Bugünkü öğünlerini gir (Köşe)', '21:00', 'FREQ=DAILY'))
+  if (r.water) ['11:00', '15:00', '18:30'].forEach((t, i) => out.push(ev('su' + i, '💧 Su iç (Phoenix)', t, 'FREQ=DAILY')))
+  if (r.food) out.push(ev('ogun', '🍽️ Bugünkü öğünlerini gir (Phoenix)', '21:00', 'FREQ=DAILY'))
   if (r.train) {
     const days = p.schedule.map((s, i) => (s !== 'dinlenme' ? BY[i] : null)).filter(Boolean)
-    if (days.length) out.push(ev('antrenman', '🥊 Antrenman günü — çantanı hazırla (Köşe)', '09:00', `FREQ=WEEKLY;BYDAY=${days.join(',')}`))
+    if (days.length) out.push(ev('antrenman', '🥊 Antrenman günü — çantanı hazırla (Phoenix)', '09:00', `FREQ=WEEKLY;BYDAY=${days.join(',')}`))
   }
   out.push('END:VCALENDAR')
   return out.join('\r\n')
@@ -51,7 +51,7 @@ export default function Settings({ profile, onClose }) {
   const [f, setF] = useState({ ...profile })
   const [rem, setRem] = useState({ weigh: true, sleep: true, water: true, food: true, train: true })
   const set = (k) => (v) => setF((s) => ({ ...s, [k]: v }))
-  const p = { ...f, age: toNum(f.age) || profile.age, height: toNum(f.height) || profile.height, weight: toNum(f.weight) || profile.weight, waterGoal: toNum(f.waterGoal) || 3000, sleepGoal: toNum(f.sleepGoal) || 8, proteinPerKg: toNum(f.proteinPerKg) || 2 }
+  const p = { ...f, age: toNum(f.age) || profile.age, height: toNum(f.height) || profile.height, weight: toNum(f.weight) || profile.weight, waterGoal: toNum(f.waterGoal) || 3000, sleepGoal: toNum(f.sleepGoal) || 8, proteinPerKg: toNum(f.proteinPerKg) || 2, pushupGoal: toNum(f.pushupGoal) || 30 }
   const t = targets(p)
   const save = () => {
     saveProfile(p)
@@ -103,6 +103,9 @@ export default function Settings({ profile, onClose }) {
         <div className="row">
           <Field label="Su hedefi (ml)"><Num value={f.waterGoal} onChange={set('waterGoal')} /></Field>
           <Field label="Uyku hedefi (sa)"><Num value={f.sleepGoal} onChange={set('sleepGoal')} /></Field>
+          <Field label="Şınav hedefi (gün)"><Num value={f.pushupGoal} onChange={set('pushupGoal')} /></Field>
+        </div>
+        <div className="row">
           <Field label="Yatış saati"><input className="in" type="time" value={f.bedtime} onChange={(e) => set('bedtime')(e.target.value)} /></Field>
         </div>
       </div>
@@ -132,21 +135,21 @@ export default function Settings({ profile, onClose }) {
             <span>{l}</span>
           </label>
         ))}
-        <button className="btn ghost full" onClick={() => saveFile('kose-hatirlatmalar.ics', buildICS(p, rem), 'text/calendar')}>Takvime ekle (.ics)</button>
+        <button className="btn ghost full" onClick={() => saveFile('phoenix-hatirlatmalar.ics', buildICS(p, rem), 'text/calendar')}>Takvime ekle (.ics)</button>
       </div>
 
       <SyncPanel />
 
       <div className="card col">
         <h3 style={{ margin: 0 }}>Yedekleme</h3>
-        <button className="btn ghost full" onClick={() => saveFile(`kose-yedek-${today()}.json`, exportJSON(), 'application/json')}>Verilerimi dosyaya aktar</button>
+        <button className="btn ghost full" onClick={() => saveFile(`phoenix-yedek-${today()}.json`, exportJSON(), 'application/json')}>Verilerimi dosyaya aktar</button>
         <label className="btn ghost full">
           Yedekten geri yükle
           <input type="file" accept="application/json,.json" onChange={doImport} style={{ display: 'none' }} />
         </label>
         <button className="btn danger full" onClick={() => { if (window.confirm('Bu cihazdaki TÜM veriler silinecek. Emin misin?') && window.confirm('Son kez: bu işlem geri alınamaz. Silinsin mi?')) { wipeAll(); onClose() } }}>Bu cihazdaki verileri sil</button>
       </div>
-      <p className="muted tiny center">Köşe v1.0 · Veriler önce bu cihazda saklanır; giriş yaptıysan buluta eşitlenir.</p>
+      <p className="muted tiny center">Phoenix v1.0 · Veriler önce bu cihazda saklanır; giriş yaptıysan buluta eşitlenir.</p>
     </Sheet>
   )
 }

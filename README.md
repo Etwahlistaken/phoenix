@@ -1,4 +1,4 @@
-# Köşe — Dövüş & Beslenme Takibi
+# Phoenix — Dövüş & Beslenme Takibi
 
 Boks, kickboks ve MMA antrenmanlarını, beslenmeyi (kalori/makro), vücut ölçülerini ve uykuyu takip eden,
 telefona kurulabilen web uygulaması (PWA). Veriler önce cihazda saklanır, isteğe bağlı olarak Supabase ile eşitlenir.
